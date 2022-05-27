@@ -1,0 +1,25 @@
+* gcc -pthread
+
+* pthread_t is the data type used to uniquely identify a thread.
+It is returned by pthread_create() and used by the application in function calls
+that require a thread identifier.
+	
+* The pthread_create() function starts a new thread in the calling process.
+The new thread starts execution by invoking start_routine(); 
+arg is passed as the sole argument of start_routine().
+
+int pthread_create(pthread_t *restrict thread, const pthread_attr_t *restrict attr,
+                          void *(*start_routine)(void *), void *restrict arg);
+
+
+* The usleep() function suspends execution of the calling thread 
+for (at least) usec microseconds.
+
+* The pthread_join() function waits for the thread specified by thread to terminate.
+
+* int pthread_detach(pthread_t thread);
+ The pthread_detach() function marks the thread identified by
+       thread as detached.  When a detached thread terminates, its
+       resources are automatically released back to the system without
+       the need for another thread to join with the terminated thread.
+
