@@ -6,50 +6,49 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:56:03 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/05 18:47:31 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/08 17:54:28 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/* initiliazing the arguments */
-int	get_args(t_pro *process, int argc, char **argv)
+int	get_args(t_pro *process, char **argv)
 {
 	process->n_philos = ft_atoi(argv[1]);
-	process->time_to_die = ft_atoi(argv[2]);
+	/*process->time_to_die = ft_atoi(argv[2]);
 	process->time_to_eat = ft_atoi(argv[3]);
 	process->time_to_sleep = ft_atoi(argv[4]);
 	if (argc == 6)
 		process->n_meals = ft_atoi(argv[5]);
 	else
-		process->n_meals = -1;
+		process->n_meals = -1;*/
+	//printf("%d", process->n_philos);
 	return (0);
 }
 
-void	init_args(t_pro *process)
+void	*routine()
 {
-	
-		
+	printf("eating\n");
+	return (0);
 }
 
-/* pthread_create starts/initiliazes a new thread in the calling process */
-long int	philosophers(t_pro *process, pthread_t *tid_philosophers)
+/* pthread_create starts/initiliazes a new thread in the calling process*/
+long int	philosophers(t_pro *process)
 {
 	int			i;
-	int			*philosophers;
 
 	i = 0;
 	while (i < process->n_philos)
 	{
-		philosophers[i] = i;
-		if (pthread_create(&tid_philosophers[i], NULL, &routine, &philosophers[i]) != 0)
+		if (pthread_create(&process->philos[i].tid, NULL, &routine, 
+			(void *)&process->philos[i]) != 0)
 			return (3);
 		i++;
 	}
 	i = 0;
 	while (i < process->n_philos)
 	{
-		if (pthread_join(tid_philosophers[i], NULL) != 0)
+		if (pthread_join(process->philos[i].tid, NULL) != 0)
 			return (4);
 		i++;
 	}
@@ -59,14 +58,13 @@ long int	philosophers(t_pro *process, pthread_t *tid_philosophers)
 int	main(int argc, char **argv)
 {
 	t_pro		process;
-	pthread_t	*tid_philosophers;
 
-	if (argc < 5)
+	if (argc < 2)
 		return (1);
-	tid_philosophers = malloc(sizeof(t_pro) * process.n_philos);
-	if (!tid_philosophers)
+	process.philos = malloc(sizeof(t_phil) * process.n_philos);
+	if (!process.philos)
 		return (2);
-	get_args(&process, argc, argv);
-	philosophers(&process, tid_philosophers);
+	get_args(&process, argv);
+	philosophers(&process);
 	return (0);
 }
