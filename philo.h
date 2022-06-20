@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 19:05:07 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/08 17:44:33 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/20 15:58:08 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ long	ft_atoi(char *nptr);
 /* error check */
 
 /* main */
-int		get_args(t_pro *process, char **argv);
-long	philosophers(t_pro *process);
-void 	*routine();
+int			get_args(t_pro *process, char **argv);
+long		philosophers(t_pro *process);
+void 		*routine();
+long long	get_time(void);
 
-#endif
+#endif	

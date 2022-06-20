@@ -39,11 +39,26 @@ int	main(int argc, char **argv)
 	return (0);
 }*/
 
+ long long get_time()
+{
+	struct timeval time;
+	long long t_ms;
+
+	gettimeofday(&time, NULL);
+	t_ms = (time.tv_sec * 1000 + time.tv_usec / 1000); // convert seconds and microseconds to miliseconds
+	return (t_ms);
+}
+
 int	main()
 {
-	struct timeval current_time;
 
-	gettimeofday(&current_time, NULL);
-	printf("Seconds : %ld\n", current_time.tv_sec);
+	long long i;
+	i = get_time();
+	printf("%lld", i);
 	return (0);
 }
+
+//printf("Seconds: %ld\n", time.tv_sec);
+//	printf("Seconds in miliseconds : %ld\n", time.tv_sec * 1000);
+//	printf("Microseconds : %d\n", time.tv_usec);
+//	printf("Microseconds in miliseconds : %d\n", time.tv_usec / 1000);
