@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:56:03 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/20 16:22:47 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/20 16:58:08 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ long long	get_time(void)
 
 int	get_args(t_pro *process, char **argv)
 {
-	process->n_philos = ft_atoi(argv[1]);
+	process->n_philos = ft_atoi(argv[1]); //
 	/*process->time_to_die = ft_atoi(argv[2]);
 	process->time_to_eat = ft_atoi(argv[3]);
 	process->time_to_sleep = ft_atoi(argv[4]);
