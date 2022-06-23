@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:56:03 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/20 16:58:08 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/23 18:04:38 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,40 @@ long long	get_time(void)
 
 int	get_args(t_pro *process, char **argv)
 {
-	process->n_philos = ft_atoi(argv[1]); //
-	/*process->time_to_die = ft_atoi(argv[2]);
+	process->n_philos = ft_atoi(argv[1]);
+	/*
+	process->time_to_die = ft_atoi(argv[2]);
 	process->time_to_eat = ft_atoi(argv[3]);
 	process->time_to_sleep = ft_atoi(argv[4]);
 	if (argc == 6)
 		process->n_meals = ft_atoi(argv[5]);
 	else
-		process->n_meals = -1;*/
+		process->n_meals = -1;
+	*/
 	//printf("%d", process->n_philos);
 	return (0);
+} 
+
+void fork_init(t_pro *process)
+{
+	int	i;
+
+	process->fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * process->n_philos);
+	i = 0;
+	while (i < process->n_philos)
+	{
+		if (pthread_mutex_init(&process->fork[i], NULL) == 0)
+			printf("I do not know!");
+		i++;
+	}
+
+
 }
 
 void	*routine()
 {
 	printf("eating\n");
-	return (0);
+	return(0);
 }
 
 /* pthread_create starts/initiliazes a new thread in the calling process*/
@@ -81,6 +99,7 @@ int	main(int argc, char **argv)
 		return (2);
 	get_args(&process, argv);
 	philosophers(&process);
+	fork_init(&process);
 	get_time();
 	return (0);
 }

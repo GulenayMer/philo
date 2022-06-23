@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 19:05:07 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/20 15:58:08 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/23 18:09:42 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,19 @@
 
 typedef struct s_phil
 {
-	int		id;
+	int			id;
 	pthread_t	tid;
 }	t_phil;
 
 typedef struct s_pro
 {
-	int		n_philos;
-	int		time_to_die;
-	int		time_to_eat;
-	int		time_to_sleep;
-	int		n_meals;
-	t_phil	*philos;
+	int				n_philos;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				n_meals;
+	pthread_mutex_t	*fork;
+	t_phil			*philos;
 }		t_pro;
 
 /* utils */
@@ -52,5 +53,7 @@ int			get_args(t_pro *process, char **argv);
 long		philosophers(t_pro *process);
 void 		*routine();
 long long	get_time(void);
+void 		eat_philo(t_pro *process);
+void 		fork_init(t_pro *process);
 
-#endif	
+#endif
