@@ -30,6 +30,9 @@ typedef struct s_phil
 {
 	int			id;
 	pthread_t	tid;
+	int			left_fork;
+	int			right_fork;
+	int			last_meal;
 }	t_phil;
 
 typedef struct s_pro
