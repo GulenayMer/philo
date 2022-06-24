@@ -6,96 +6,56 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:56:03 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/23 18:04:38 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/24 23:54:49 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <stdlib.h>
-#include <pthread.h>
 
-long long	get_time(void)
+void	*eating(void *philosophers)
 {
-	struct timeval	time;
-	long long		t_ms;
-	long long		current_time;
-	int 			start = 30;
+	//int		i;
+	t_pro	*p;
+	t_phil	*ph;
 
-	gettimeofday(&time, NULL);
-	t_ms = (time.tv_sec * 1000 + time.tv_usec / 1000);
-	current_time = t_ms - start;
-	return (current_time);
-}
+	ph = (t_phil *)philosophers;
+	p = ph->pro;
 
-int	get_args(t_pro *process, char **argv)
-{
-	process->n_philos = ft_atoi(argv[1]);
-	process->time_to_die = ft_atoi(argv[2]);
-	process->time_to_eat = ft_atoi(argv[3]);
-	process->time_to_sleep = ft_atoi(argv[4]);
-	/* if (argc == 6)
-		process->n_meals = ft_atoi(argv[5]);
-	else
-		process->n_meals = -1; */
+	printf("philo id = %d\n",ph->id);
+/* 	i = 0;
+	while (i < p->n_philos)
+	{ */
+		//pro->philos[i].last_meal = get_time();
+		if ((ph->id) % 2 == 0)
+		{
+			pthread_mutex_lock(&(p->fork[0]));
+			// pthread_mutex_lock(&(p->fork[ph->left_fork]));
+			puts("hi");
+			pthread_mutex_lock(&p->fork[1]);
+			// pthread_mutex_lock(&p->fork[ph->right_fork]);
+			printf("fork worked");
+			pthread_mutex_unlock(&p->fork[0]);
+			pthread_mutex_unlock(&p->fork[1]);
+			// pthread_mutex_unlock(&p->fork[ph->left_fork]);
+			// pthread_mutex_unlock(&p->fork[ph->right_fork]);
+		}
+/* 		i++;
+	} */
+	printf("eating\n");
 	return (0);
-} 
-
-void init_all(t_pro *process)
-{
-	int	i;
-
-	i = 0;
-	while(i < process->n_philos)
-	{
-		process->philos[i].id = i;
-		process->philos[i].left_fork = i;
-		if (i == process->n_philos - 1)
-			process->philos[i].right_fork = 0;
-		else
-			process->philos[i].right_fork = i + 1;
-		i++;
-	}
 }
 
-void fork_init(t_pro *process)
+/* void	*routine(void *philosophers)
 {
-	int	i;
+	t_pro	*process;
+	t_phil	*ph;
 
-	process->fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * process->n_philos);
-	i = 0;
-	while (i < process->n_philos)
-	{
-		if (pthread_mutex_init(&process->fork[i], NULL) != 0)
-		{
-			printf("error in forks initializing");
-			exit(1);
-		}
-		i++;
-	}
-}
-
-void	eating(t_pro *process)
-{ 
-	int i = 0;
-	while(i < process->n_philos)
-	{
-		if(process->philos[i].id % 2 == 0)
-		{
-			pthread_mutex_lock(&process->fork[process->philos->left_fork]);
-			//process->philos->last_meal = get_time(process);
-		}
-		i++;
-	}
-	pthread_mutex_unlock(&process->fork[process->philos->left_fork]);
-}
-
-void	*routine()
-{
-	t_pro *process=NULL;
+	ph = (t_phil *)philosophers;
+	fork_init(process);
 	eating(process);
 	printf("eating\n");
-	return(0);
-}
+	return (0);
+} */
 
 /* pthread_create starts/initiliazes a new thread in the calling process*/
 long int	philosophers(t_pro *process)
@@ -103,18 +63,20 @@ long int	philosophers(t_pro *process)
 	int			i;
 
 	i = 0;
+	// printf("hi%p\n",&process->fork[0]);
+
 	while (i < process->n_philos)
 	{
-		if (pthread_create(&process->philos[i].tid, NULL, &routine,
-			(void *)&process->philos[i]) != 0)
-			return (3);
+		if ((pthread_create(&(process->philos[i].tid), NULL, &eating,
+				&(process->philos[i]))) != 0)
+			printf("Error with creating thread\n");
 		i++;
 	}
 	i = 0;
 	while (i < process->n_philos)
 	{
 		if (pthread_join(process->philos[i].tid, NULL) != 0)
-			return (4);
+			printf("Error with joining thread\n");
 		i++;
 	}
 	return (0);
@@ -126,12 +88,12 @@ int	main(int argc, char **argv)
 
 	if (argc < 2)
 		return (1);
-	get_args(&process, argv);
-	process.philos = malloc(sizeof(t_phil) * process.n_philos);
-	if (!process.philos)
-		return (2);
+	get_args(&process, argv, argc);
+	init_all(&process);
+	// printf("%p\n",&process.fork[0]);
+	printf("%d\n", process.philos[3].left_fork);
+	printf("%d\n", process.philos[3].right_fork);
+	// fork_init(&process);
 	philosophers(&process);
-	fork_init(&process);
-	get_time();
 	return (0);
 }
