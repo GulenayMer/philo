@@ -4,6 +4,48 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
+int	ft_isnum(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	error_check(int argc, char **argv)
+{
+	int	i;
+
+	if (argc < 5 || argc > 6)
+	{
+		printf("number of arguments are invalid\n");
+		return (1);
+	}
+	i = 1;
+	while (i <= argc)
+	{
+		if (ft_isnum(argv[i]))
+		{
+			printf("non-numeric arguments\n");
+			return (1);
+		}	
+		i++;
+	}
+	return (0);
+}
+
+int	main(int argc, char **argv)
+{
+	error_check(argc, argv);
+	return (0);
+}
+
 /*void	*routine(void *arg)
 {
 	int	primes[10] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
@@ -39,24 +81,24 @@ int	main(int argc, char **argv)
 	return (0);
 }*/
 
- long long get_time()
-{
-	struct timeval time;
-	long long t_ms;
+//  long long get_time()
+// {
+// 	struct timeval time;
+// 	long long t_ms;
 
-	gettimeofday(&time, NULL);
-	t_ms = (time.tv_sec * 1000 + time.tv_usec / 1000); // convert seconds and microseconds to miliseconds
-	return (t_ms);
-}
+// 	gettimeofday(&time, NULL);
+// 	t_ms = (time.tv_sec * 1000 + time.tv_usec / 1000); // convert seconds and microseconds to miliseconds
+// 	return (t_ms);
+// }
 
-int	main()
-{
+// int	main()
+// {
 
-	long long i;
-	i = get_time();
-	printf("%lld", i);
-	return (0);
-}
+// 	long long i;
+// 	i = get_time();
+// 	printf("%lld", i);
+// 	return (0);
+// }
 
 //printf("Seconds: %ld\n", time.tv_sec);
 //	printf("Seconds in miliseconds : %ld\n", time.tv_sec * 1000);

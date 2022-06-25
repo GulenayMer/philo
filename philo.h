@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 19:05:07 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/24 23:41:31 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/25 17:52:24 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ typedef struct s_phil
 	pthread_t	tid;
 	int			left_fork;
 	int			right_fork;
-	int			last_meal;
-	struct 		s_pro *pro;
+	long long	last_meal;
+	int 		is_dead;
+	struct s_pro *pro;
 }	t_phil;
 
 typedef struct s_pro
@@ -45,20 +46,26 @@ typedef struct s_pro
 	int				n_meals;
 	long long		start_time;
 	pthread_mutex_t	*fork;
+	pthread_mutex_t	print;
 	t_phil			*philos;
 }		t_pro;
 
 /* utils */
 long		ft_atoi(char *nptr);
 long long	get_time(void);
+
 /* error check */
+int			error_check(int argc, char **argv);
+int			ft_isnum(char *str);
 
-/* main */
+/* inits */
 int			get_args(t_pro *process, char **argv, int argc);
-void		init_all(t_pro *process);
-void		fork_init(t_pro *process);
-void		*eating(void *philosophers);
-long		philosophers(t_pro *process);
+void		init_data(t_pro *process);
+void		init_fork(t_pro *process);
+void		create_tread(t_pro *process);
 
+/* actions */
+void		eat_philo(t_pro *process);
+void		*routine(void *philosophers);
 
 #endif
