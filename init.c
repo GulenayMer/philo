@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 17:22:39 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/25 17:55:43 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/25 17:59:39 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	init_fork(t_pro *process)
 void	init_data(t_pro *process)
 {
 	int	i;
+
 	process->philos = malloc(sizeof(t_phil) * process->n_philos);
 	i = 0;
 	while (i < process->n_philos)

@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 19:05:07 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/25 17:52:24 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/25 19:35:41 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@
 # include <stdlib.h>
 # include <sys/time.h>
 
-# define MAX_PHILO 200;
-# define FORK "has taken a fork";
-# define EAT "is eating";
-# define SLEEP "is sleeping";
-# define THINK "is thinking";
-# define DEAD "died";
+# define MAX_PHILO 200
+# define FORK "has taken a fork"
+# define EAT "is eating"
+# define SLEEP "is sleeping"
+# define THINK "is thinking"
+# define DEAD "died"
 
 typedef struct s_phil
 {
@@ -53,6 +53,7 @@ typedef struct s_pro
 /* utils */
 long		ft_atoi(char *nptr);
 long long	get_time(void);
+void		print_message(t_pro *process, t_phil *philos);
 
 /* error check */
 int			error_check(int argc, char **argv);

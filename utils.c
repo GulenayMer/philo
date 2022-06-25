@@ -6,11 +6,18 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 13:47:32 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/25 15:35:30 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/25 19:31:28 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	print_message(t_pro *process, t_phil *philos)
+{
+	pthread_mutex_init(&(process->print), NULL);
+	pthread_mutex_lock(&(process->print));
+	pthread_mutex_unlock(&(process->print));
+}
 
 long long	get_time(void)
 {
