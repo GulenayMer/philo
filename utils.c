@@ -6,16 +6,17 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 13:47:32 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/25 19:31:28 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/25 20:25:45 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	print_message(t_pro *process, t_phil *philos)
+void	print_message(t_pro *process, t_phil *philos, char *message)
 {
 	pthread_mutex_init(&(process->print), NULL);
 	pthread_mutex_lock(&(process->print));
+	printf("%lld Philosopher %d %s\n", get_time(), philos->id, message);
 	pthread_mutex_unlock(&(process->print));
 }
 

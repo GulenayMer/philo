@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 19:05:07 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/25 19:35:41 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/25 21:00:48 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,14 @@ typedef struct s_pro
 	long long		start_time;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	print;
+	pthread_mutex_t	dead;
 	t_phil			*philos;
 }		t_pro;
 
 /* utils */
 long		ft_atoi(char *nptr);
 long long	get_time(void);
-void		print_message(t_pro *process, t_phil *philos);
+void		print_message(t_pro *process, t_phil *philos, char *message);
 
 /* error check */
 int			error_check(int argc, char **argv);
@@ -66,7 +67,9 @@ void		init_fork(t_pro *process);
 void		create_tread(t_pro *process);
 
 /* actions */
+void		get_fork(t_pro *process);
 void		eat_philo(t_pro *process);
+void		dead_philo(t_pro *p, t_phil *ph);
 void		*routine(void *philosophers);
-
+void		sleep_philo(t_pro *p, t_phil *ph);
 #endif
