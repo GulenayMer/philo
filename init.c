@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 17:22:39 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/25 17:59:39 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/26 15:12:17 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	init_fork(t_pro *process)
 
 	n = process->n_philos;
 	process->fork = (pthread_mutex_t *)malloc((sizeof(pthread_mutex_t)) * n);
+	if (!process->fork)
+		return ;
 	i = 0;
 	while (i < process->n_philos)
 	{
@@ -46,20 +48,24 @@ void	init_data(t_pro *process)
 	int	i;
 
 	process->philos = malloc(sizeof(t_phil) * process->n_philos);
+	if (!process->philos)
+		return ;
 	i = 0;
 	while (i < process->n_philos)
 	{
 		process->philos[i].pro = process;
 		process->philos[i].id = i;
-		process->philos[i].left_fork = i;
-		process->start_time = get_time();
 		process->philos[i].last_meal = 0;
+		process->philos[i].meals_eaten = 0;
+		process->philos[i].left_fork = i;
 		if (i == process->n_philos - 1)
 			process->philos[i].right_fork = 0;
 		else
 			process->philos[i].right_fork = i + 1;
 		i++;
 	}
+	process->start = get_time();
+	process->end = 0;
 	init_fork(process);
 }
 
@@ -71,6 +77,7 @@ void	create_tread(t_pro *process)
 	i = 0;
 	while (i < process->n_philos)
 	{
+		process->philos[i].last_meal = get_time();
 		if ((pthread_create(&(process->philos[i].tid), NULL, &routine, \
 			&(process->philos[i]))) != 0)
 			printf("Error with creating thread\n");

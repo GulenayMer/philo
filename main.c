@@ -6,40 +6,38 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 17:56:03 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/25 21:13:11 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/26 16:01:31 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	get_fork(t_pro *process)
+void	get_fork(t_pro *p, t_phil *ph)
 {
-	pthread_mutex_lock(&(process->fork[process->philos->left_fork]));
-	//printf("%s the first fork\n ", FORK);
-	pthread_mutex_lock(&(process->fork[process->philos->right_fork]));
-	
-	//printf("%s the second fork\n ", FORK);
-	//printf("index: %d %s the second fork\n ",  process->philos[i].id, FORK);
-	pthread_mutex_unlock(&(process->fork[process->philos->left_fork]));
-	pthread_mutex_unlock(&(process->fork[process->philos->right_fork]));
+	pthread_mutex_lock(&(p->fork[ph->left_fork]));
+	print_message(p, ph, FORK);
+	pthread_mutex_lock(&(p->fork[ph->right_fork]));
+	print_message(p, ph, FORK);
+	pthread_mutex_unlock(&(p->fork[ph->left_fork]));
+	pthread_mutex_unlock(&(p->fork[ph->right_fork]));
 }
 
-void	eat_philo(t_pro *process)
+void	eat_philo(t_pro *p, t_phil *ph)
 {
 	int	i;
 
 	i = 0;
-	while (i < process->n_philos)
+	while (i < p->n_philos)
 	{
-		if (process->philos[i].id % 2 != 0)
+		if (ph[i].id % 2 != 0)
 		{
-			get_fork(process);
-			
+			get_fork(p, ph);
 		}
 		i++;
 	}
 }
 
+/* simulation for each philosopher */
 void	*routine(void *philosophers)
 {
 	t_pro	*p;
@@ -48,7 +46,7 @@ void	*routine(void *philosophers)
 	ph = (t_phil *)philosophers;
 	p = ph->pro;
 	//printf("eating, %d\n", ph->id);
-	eat_philo(p);
+	eat_philo(p, ph);
 	return (0);
 }
 

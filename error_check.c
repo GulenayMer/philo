@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 15:35:03 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/25 15:35:32 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/26 15:12:38 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,22 @@ int	error_check(int argc, char **argv)
 			return (1);
 		}	
 		i++;
+	}
+	return (0);
+}
+
+int	arg_check(t_pro *process)
+{
+	if (process->n_philos < 1 || process->n_philos > 200)
+	{
+		printf("number of philosophers are invalid\n");
+		return (1);
+	}
+	if (process->time_to_die < 60 || process->n_philos < 60 \
+		|| process->time_to_sleep < 60)
+	{
+		printf("invalid ms\n");
+		return (1);
 	}
 	return (0);
 }

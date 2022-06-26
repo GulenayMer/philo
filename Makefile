@@ -6,7 +6,7 @@
 #    By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/26 17:42:11 by mgulenay          #+#    #+#              #
-#    Updated: 2022/06/25 15:35:50 by mgulenay         ###   ########.fr        #
+#    Updated: 2022/06/26 15:34:03 by mgulenay         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRCS 	=	main.c \
 			utils.c \
 			init.c \
 			error_check.c \
+			actions.c \
 			
 SRC_OBJS	=	$(SRCS:%.c=%.o)
 

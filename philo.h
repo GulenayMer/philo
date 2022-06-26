@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 19:05:07 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/25 21:00:48 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/26 16:13:23 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <stdlib.h>
 # include <sys/time.h>
 
-# define MAX_PHILO 200
 # define FORK "has taken a fork"
 # define EAT "is eating"
 # define SLEEP "is sleeping"
@@ -33,8 +32,9 @@ typedef struct s_phil
 	int			left_fork;
 	int			right_fork;
 	long long	last_meal;
-	int 		is_dead;
-	struct s_pro *pro;
+	int			meals_eaten;
+	int			is_dead;
+	struct s_pro	*pro;
 }	t_phil;
 
 typedef struct s_pro
@@ -44,10 +44,12 @@ typedef struct s_pro
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				n_meals;
-	long long		start_time;
+	long long		start;
+	int				end;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	print;
 	pthread_mutex_t	dead;
+	pthread_mutex_t	sleep;
 	t_phil			*philos;
 }		t_pro;
 
@@ -58,6 +60,7 @@ void		print_message(t_pro *process, t_phil *philos, char *message);
 
 /* error check */
 int			error_check(int argc, char **argv);
+int			arg_check(t_pro *process);
 int			ft_isnum(char *str);
 
 /* inits */
@@ -67,9 +70,10 @@ void		init_fork(t_pro *process);
 void		create_tread(t_pro *process);
 
 /* actions */
-void		get_fork(t_pro *process);
-void		eat_philo(t_pro *process);
-void		dead_philo(t_pro *p, t_phil *ph);
 void		*routine(void *philosophers);
+void		get_fork(t_pro *p, t_phil *ph);
+void		eat_philo(t_pro *p, t_phil *ph);
+void		dead_philo(t_pro *p, t_phil *ph);
 void		sleep_philo(t_pro *p, t_phil *ph);
+
 #endif

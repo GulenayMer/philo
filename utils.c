@@ -6,12 +6,13 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 13:47:32 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/25 20:25:45 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/26 16:16:10 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+/* lock the particular message and print it to know which action is taken */
 void	print_message(t_pro *process, t_phil *philos, char *message)
 {
 	pthread_mutex_init(&(process->print), NULL);
@@ -20,6 +21,7 @@ void	print_message(t_pro *process, t_phil *philos, char *message)
 	pthread_mutex_unlock(&(process->print));
 }
 
+/* calculate the time in ms */
 long long	get_time(void)
 {
 	struct timeval	time;
