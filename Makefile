@@ -6,7 +6,7 @@
 #    By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/26 17:42:11 by mgulenay          #+#    #+#              #
-#    Updated: 2022/06/26 15:34:03 by mgulenay         ###   ########.fr        #
+#    Updated: 2022/06/26 18:10:24 by mgulenay         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ SRC_OBJS	=	$(SRCS:%.c=%.o)
 RM          =	rm -f
 
 $(NAME): $(SRC_OBJS)
-	$(CC) $(CFLAGS) -pthread -o $(NAME) $(SRC_OBJS) 
+	$(CC) $(CFLAGS) -fsanitize=thread -lpthread -o $(NAME) $(SRC_OBJS) 
 
 all : $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 17:22:39 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/26 15:12:17 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/26 19:52:37 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,10 @@ void	init_data(t_pro *process)
 	while (i < process->n_philos)
 	{
 		process->philos[i].pro = process;
-		process->philos[i].id = i;
+		process->philos[i].id = i + 1;
 		process->philos[i].last_meal = 0;
 		process->philos[i].meals_eaten = 0;
+		process->philos[i].is_dead = 0;
 		process->philos[i].left_fork = i;
 		if (i == process->n_philos - 1)
 			process->philos[i].right_fork = 0;
