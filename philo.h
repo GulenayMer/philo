@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 19:05:07 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/26 16:13:23 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/28 23:08:32 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_pro
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	print;
 	pthread_mutex_t	dead;
-	pthread_mutex_t	sleep;
+
 	t_phil			*philos;
 }		t_pro;
 
@@ -75,5 +75,5 @@ void		get_fork(t_pro *p, t_phil *ph);
 void		eat_philo(t_pro *p, t_phil *ph);
 void		dead_philo(t_pro *p, t_phil *ph);
 void		sleep_philo(t_pro *p, t_phil *ph);
-
+void		think_philo(t_pro *p, t_phil *ph);
 #endif

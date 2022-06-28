@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 17:22:39 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/26 19:52:37 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/29 00:23:49 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,10 @@ void	init_data(t_pro *process)
 			process->philos[i].right_fork = i + 1;
 		i++;
 	}
-	process->start = get_time();
 	process->end = 0;
 	init_fork(process);
+	if (pthread_mutex_init(&(process->print), NULL) != 0)
+		printf("error in print initializing");
 }
 
 /* pthread_create starts/initiliazes a new thread in the calling process*/
@@ -76,6 +77,7 @@ void	create_tread(t_pro *process)
 	int	i;
 
 	i = 0;
+	process->start = get_time();
 	while (i < process->n_philos)
 	{
 		process->philos[i].last_meal = get_time();
