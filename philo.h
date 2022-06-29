@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 19:05:07 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/28 23:08:32 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/29 21:29:16 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ typedef struct s_phil
 	int			right_fork;
 	long long	last_meal;
 	int			meals_eaten;
-	int			is_dead;
 	struct s_pro	*pro;
 }	t_phil;
 
@@ -46,10 +45,10 @@ typedef struct s_pro
 	int				n_meals;
 	long long		start;
 	int				end;
+	int				is_dead;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	print;
 	pthread_mutex_t	dead;
-
 	t_phil			*philos;
 }		t_pro;
 
@@ -71,9 +70,10 @@ void		create_tread(t_pro *process);
 
 /* actions */
 void		*routine(void *philosophers);
-void		get_fork(t_pro *p, t_phil *ph);
+void		eat_sleep_think(t_pro *p, t_phil *ph);
 void		eat_philo(t_pro *p, t_phil *ph);
-void		dead_philo(t_pro *p, t_phil *ph);
+int			dead_philo(t_pro *p, t_phil *ph);
 void		sleep_philo(t_pro *p, t_phil *ph);
 void		think_philo(t_pro *p, t_phil *ph);
+void		dies_philo_sleep(t_pro *p, t_phil *ph);
 #endif
