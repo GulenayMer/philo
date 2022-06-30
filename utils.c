@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 13:47:32 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/29 20:54:25 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/30 22:05:20 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	print_message(t_pro *process, t_phil *philos, char *message)
 {
 		pthread_mutex_lock(&(process->print));
-		printf("%05lld Philosopher %d %s\n", get_time() - process->start, \
+		printf("%05lld %d %s\n", get_time() - process->start, \
 			philos->id, message);
 		pthread_mutex_unlock(&(process->print));
 }

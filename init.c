@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 17:22:39 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/29 21:29:23 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/06/30 22:14:44 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,6 @@ int	get_args(t_pro *process, char **argv, int argc)
 	return (0);
 }
 
-void	init_fork(t_pro *process)
-{
-	int	i;
-	int	n;
-
-	n = process->n_philos;
-	process->fork = (pthread_mutex_t *)malloc((sizeof(pthread_mutex_t)) * n);
-	if (!process->fork)
-		return ;
-	i = 0;
-	while (i < process->n_philos)
-	{
-		if (pthread_mutex_init(&(process->fork[i]), NULL) != 0)
-			printf("error in forks initializing");
-		i++;
-	}
-}
-
 void	init_data(t_pro *process)
 {
 	int	i;
@@ -55,7 +37,7 @@ void	init_data(t_pro *process)
 	{
 		process->philos[i].pro = process;
 		process->philos[i].id = i + 1;
-		process->philos[i].last_meal = 0;
+		process->philos[i].last_meal = get_time();
 		process->philos[i].meals_eaten = 0;
 		process->philos[i].left_fork = i;
 		if (i == process->n_philos - 1)
@@ -66,10 +48,30 @@ void	init_data(t_pro *process)
 	}
 	process->end = 0;
 	process->is_dead = 0;
+	init_fork(process);
 	if (pthread_mutex_init(&(process->print), NULL) != 0)
 		printf("error in print initializing");
 	if (pthread_mutex_init(&(process->dead), NULL) != 0)
 		printf("error in dead initializing");
+}
+
+
+void	init_fork(t_pro *process)
+{
+	int	i;
+	int	n;
+
+	n = process->n_philos;
+	process->fork = (pthread_mutex_t *)malloc((sizeof(pthread_mutex_t)) * n);
+	if (!process->fork)	
+		return ;
+	i = 0;
+	while (i < process->n_philos)
+	{
+		if (pthread_mutex_init(&(process->fork[i]), NULL) != 0)
+			printf("error in forks initializing");
+		i++;
+	}
 }
 
 /* pthread_create starts/initiliazes a new thread in the calling process*/
@@ -81,7 +83,7 @@ void	create_tread(t_pro *process)
 	process->start = get_time();
 	while (i < process->n_philos)
 	{
-		process->philos[i].last_meal = get_time();
+		//process->philos[i].last_meal = get_time();
 		if ((pthread_create(&(process->philos[i].tid), NULL, &routine, \
 			&(process->philos[i]))) != 0)
 			printf("Error with creating thread\n");
