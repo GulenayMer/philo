@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 20:26:48 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/30 22:21:18 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/01 14:17:46 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 int	dead_philo(t_pro *p, t_phil *ph)
 {
 
-	if ((get_time() - ph->last_meal) > p->time_to_die)
+	if ((get_time() - ph->last_meal) >= p->time_to_die)
 	{
 		// printf("%lld  ", get_time() - ph->last_meal);
-		pthread_mutex_lock(&(p->dead));
-		p->end = 1;
-		p->is_dead = 1;
-		print_message(p, ph, DEAD);
-		pthread_mutex_unlock(&(p->dead));
-		return (1);
+			pthread_mutex_lock(&p->dead);
+			p->end = 1;
+			p->is_dead = 1;
+			print_message(p, ph, DEAD);
+			pthread_mutex_unlock(&p->dead);
+			return (1);
 	}
 	return (0);
 }
@@ -42,7 +42,7 @@ int	check_if_dead(t_pro *p)
 		i++;
 	}
 	return (0);
-}
+} 
 
 /* void	dies_philo_sleep(t_pro *p, t_phil *ph)
 {
@@ -53,10 +53,9 @@ int	check_if_dead(t_pro *p)
 		{
 			p->is_dead = 1;
 			p->end = 1;
-	
 		}
-}
- */
+} */
+
 void	sleep_philo(t_pro *p, t_phil *ph)
 {
 	print_message(p, ph, SLEEP);
@@ -66,7 +65,5 @@ void	sleep_philo(t_pro *p, t_phil *ph)
 
 void	think_philo(t_pro *p, t_phil *ph)
 {
-/* 	if (dead_philo(p, ph))
-		return ; */
 	print_message(p, ph, THINK);
 }

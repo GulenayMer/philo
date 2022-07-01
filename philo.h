@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 19:05:07 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/30 22:27:23 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/01 14:07:55 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <stdbool.h>
 
 # define FORK "has taken a fork"
 # define EAT "is eating"
@@ -33,10 +34,6 @@ typedef struct s_phil
 	int			right_fork;
 	long long	last_meal;
 	int			meals_eaten;
-	int			time_to_die;
-	int			time_to_eat;
-	int			time_to_sleep;
-	int			n_meals;
 	struct s_pro	*pro;
 }	t_phil;
 
@@ -46,10 +43,14 @@ typedef struct s_pro
 	long long		start;
 	int				end;
 	int				is_dead;
-	pthread_mutex_t	*fork;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				n_meals;
 	pthread_mutex_t	print;
+	pthread_mutex_t	*fork;
+	pthread_mutex_t	*last_meal;
 	pthread_mutex_t	dead;
-	pthread_mutex_t	last_meal;
 	t_phil			*philos;
 }		t_pro;
 
@@ -78,4 +79,5 @@ void		sleep_philo(t_pro *p, t_phil *ph);
 void		think_philo(t_pro *p, t_phil *ph);
 void		dies_philo_sleep(t_pro *p, t_phil *ph);
 int			check_if_dead(t_pro *p);
+void		get_forks(t_pro *p, t_phil *ph);
 #endif

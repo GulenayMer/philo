@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 17:22:39 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/30 22:14:44 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/01 14:07:36 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ void	init_data(t_pro *process)
 	process->end = 0;
 	process->is_dead = 0;
 	init_fork(process);
-	if (pthread_mutex_init(&(process->print), NULL) != 0)
-		printf("error in print initializing");
 	if (pthread_mutex_init(&(process->dead), NULL) != 0)
 		printf("error in dead initializing");
+	if (pthread_mutex_init(&(process->print), NULL) != 0)
+		printf("error in print initializing");
 }
 
 
@@ -83,7 +83,7 @@ void	create_tread(t_pro *process)
 	process->start = get_time();
 	while (i < process->n_philos)
 	{
-		//process->philos[i].last_meal = get_time();
+		process->philos[i].last_meal = get_time();
 		if ((pthread_create(&(process->philos[i].tid), NULL, &routine, \
 			&(process->philos[i]))) != 0)
 			printf("Error with creating thread\n");
