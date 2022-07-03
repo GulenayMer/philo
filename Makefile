@@ -14,20 +14,23 @@ NAME 	= 	philo
 
 CC 		= 	gcc
 
-CFLAGS 	= 	-Wall -Wextra -Werror -g
+CFLAGS 	= 	-Wall -Wextra -Werror -pthread
 
 SRCS 	=	main.c \
 			utils.c \
 			init.c \
 			error_check.c \
 			actions.c \
+			thread.c \
+			routine.c \
+			free.c \
 			
 SRC_OBJS	=	$(SRCS:%.c=%.o)
 
 RM          =	rm -f
 
 $(NAME): $(SRC_OBJS)
-	$(CC) $(CFLAGS) -g -lpthread -fsanitize=thread -o $(NAME) $(SRC_OBJS) 
+	$(CC) $(CFLAGS) -o $(NAME) $(SRC_OBJS) 
 
 all : $(NAME)
 

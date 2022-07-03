@@ -12,6 +12,7 @@
 
 #include "philo.h"
 
+/* getting arguments as argv, and storing them into the variables respectively */
 int	get_args(t_pro *process, char **argv, int argc)
 {
 	process->n_philos = ft_atoi(argv[1]);
@@ -19,25 +20,27 @@ int	get_args(t_pro *process, char **argv, int argc)
 	process->time_to_eat = ft_atoi(argv[3]);
 	process->time_to_sleep = ft_atoi(argv[4]);
 	if (argc == 6)
+	{
 		process->n_meals = ft_atoi(argv[5]);
+	}
 	else
 		process->n_meals = -1;
 	return (0);
 }
 
-void	init_data(t_pro *process)
+/* initiliazing the variables */
+int	init_data_for_philos(t_pro *process)
 {
 	int	i;
 
 	process->philos = malloc(sizeof(t_phil) * process->n_philos);
 	if (!process->philos)
-		return ;
+		return (1);
 	i = 0;
 	while (i < process->n_philos)
 	{
 		process->philos[i].pro = process;
 		process->philos[i].id = i + 1;
-		process->philos[i].last_meal = get_time();
 		process->philos[i].meals_eaten = 0;
 		process->philos[i].left_fork = i;
 		if (i == process->n_philos - 1)
@@ -46,54 +49,50 @@ void	init_data(t_pro *process)
 			process->philos[i].right_fork = i + 1;
 		i++;
 	}
-	process->end = 0;
-	process->is_dead = 0;
-	init_fork(process);
-	if (pthread_mutex_init(&(process->dead), NULL) != 0)
-		printf("error in dead initializing");
-	if (pthread_mutex_init(&(process->print), NULL) != 0)
-		printf("error in print initializing");
+	return (0);
 }
 
+/* initiliazing the other mutexes */
+int	ft_init_mutex(t_pro *process)
+{
+	ft_init_fork(process);
+	if (pthread_mutex_init(&(process->print_mutex), NULL) != 0)
+	{
+		printf("error in print initializing");
+		return (1);
+	}
+	if (pthread_mutex_init(&(process->last_meal_mutex), NULL) != 0)
+	{
+		printf("error in last meal initializing");
+		return (1);
+	}
+	if (pthread_mutex_init(&(process->dead_mutex), NULL) != 0)
+	{
+		printf("error in dead mutex initializing");
+		return (1);
+	}
+	return (0);
+}
 
-void	init_fork(t_pro *process)
+/* initiliazing the forks mutextes for each philos, as the number of philo = the number of forks */
+int	ft_init_fork(t_pro *process)
 {
 	int	i;
 	int	n;
 
 	n = process->n_philos;
-	process->fork = (pthread_mutex_t *)malloc((sizeof(pthread_mutex_t)) * n);
-	if (!process->fork)	
-		return ;
+	process->fork_mutex = (pthread_mutex_t *)malloc((sizeof(pthread_mutex_t)) * n);
+	if (!process->fork_mutex)	
+		return (1);
 	i = 0;
 	while (i < process->n_philos)
 	{
-		if (pthread_mutex_init(&(process->fork[i]), NULL) != 0)
+		if (pthread_mutex_init(&(process->fork_mutex[i]), NULL) != 0)
+		{
 			printf("error in forks initializing");
+			return (1);
+		}
 		i++;
 	}
-}
-
-/* pthread_create starts/initiliazes a new thread in the calling process*/
-void	create_tread(t_pro *process)
-{
-	int	i;
-
-	i = 0;
-	process->start = get_time();
-	while (i < process->n_philos)
-	{
-		process->philos[i].last_meal = get_time();
-		if ((pthread_create(&(process->philos[i].tid), NULL, &routine, \
-			&(process->philos[i]))) != 0)
-			printf("Error with creating thread\n");
-		i++;
-	}
-	i = 0;
-	while (i < process->n_philos)
-	{
-		if (pthread_join(process->philos[i].tid, NULL) != 0)
-			printf("Error with joining thread\n");
-		i++;
-	}
+	return (0);
 }

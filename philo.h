@@ -32,7 +32,7 @@ typedef struct s_phil
 	pthread_t	tid;
 	int			left_fork;
 	int			right_fork;
-	long long	last_meal;
+	long long	time_last_meal;
 	int			meals_eaten;
 	struct s_pro	*pro;
 }	t_phil;
@@ -40,17 +40,17 @@ typedef struct s_phil
 typedef struct s_pro
 {
 	int				n_philos;
-	long long		start;
-	int				end;
-	int				is_dead;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				n_meals;
-	pthread_mutex_t	print;
-	pthread_mutex_t	*fork;
-	pthread_mutex_t	*last_meal;
-	pthread_mutex_t	dead;
+	long long		time_start;
+	int				end;
+	int				flag_dead;
+	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	*fork_mutex;
+	pthread_mutex_t	dead_mutex;
+	pthread_mutex_t	last_meal_mutex;
 	t_phil			*philos;
 }		t_pro;
 
@@ -66,18 +66,24 @@ int			ft_isnum(char *str);
 
 /* inits */
 int			get_args(t_pro *process, char **argv, int argc);
-void		init_data(t_pro *process);
-void		init_fork(t_pro *process);
-void		create_tread(t_pro *process);
+int			init_data_for_philos(t_pro *process);
+int			ft_init_fork(t_pro *process);
+int			ft_create_tread(t_pro *process);
+int			ft_join_tread(t_pro *process);
+int			ft_init_mutex(t_pro *process);
 
 /* actions */
 void		*routine(void *philosophers);
+void	lock_all(t_pro *p);
 int			eat_sleep_think(t_pro *p, t_phil *ph);
-void		eat_philo(t_pro *p, t_phil *ph);
-int			dead_philo(t_pro *p, t_phil *ph);
-void		sleep_philo(t_pro *p, t_phil *ph);
-void		think_philo(t_pro *p, t_phil *ph);
-void		dies_philo_sleep(t_pro *p, t_phil *ph);
-int			check_if_dead(t_pro *p);
-void		get_forks(t_pro *p, t_phil *ph);
+int			eat_philo(t_pro *p, t_phil *ph);
+int			dead_philo(t_pro *p);
+int			sleep_philo(t_pro *p, t_phil *ph);
+int			think_philo(t_pro *p, t_phil *ph);
+void		eat_util(t_pro *p, t_phil *ph);
+
+/* */
+int			ft_mutex_destroy(t_pro *p);
+void		free_all(t_pro *p);
+
 #endif

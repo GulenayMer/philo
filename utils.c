@@ -15,13 +15,23 @@
 /* lock the particular message and print it to know which action is taken */
 void	print_message(t_pro *process, t_phil *philos, char *message)
 {
-		pthread_mutex_lock(&(process->print));
-		printf("%05lld %d %s\n", get_time() - process->start, \
-			philos->id, message);
-		pthread_mutex_unlock(&(process->print));
+		long long current;
+
+		current = get_time();
+		//pthread_mutex_lock(&process->dead_mutex);
+		pthread_mutex_lock(&(process->print_mutex));
+		if (!process->end)
+			printf("%05lld %d %s\n", current - process->time_start, \
+				philos->id, message);
+		pthread_mutex_unlock(&(process->print_mutex));
+		//pthread_mutex_unlock(&(process->dead_mutex));
+
 }
 
-/* calculate the time in ms */
+/* calculate the time in ms 
+tv_sec, in seconds, 1 second = 1000 milliseconds
+tv_usec, in microseconds, 1 microsecond = 0.001 milliseconds
+*/
 long long	get_time(void)
 {
 	struct timeval	time;
