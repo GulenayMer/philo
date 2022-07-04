@@ -34,6 +34,7 @@ typedef struct s_phil
 	int			right_fork;
 	long long	time_last_meal;
 	int			meals_eaten;
+	int			full;
 	struct s_pro	*pro;
 }	t_phil;
 
@@ -47,6 +48,8 @@ typedef struct s_pro
 	long long		time_start;
 	int				end;
 	int				flag_dead;
+	int				flag_meal;
+	int				n_fed;
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	*fork_mutex;
 	pthread_mutex_t	dead_mutex;
@@ -74,13 +77,13 @@ int			ft_init_mutex(t_pro *process);
 
 /* actions */
 void		*routine(void *philosophers);
-void	lock_all(t_pro *p);
 int			eat_sleep_think(t_pro *p, t_phil *ph);
 int			eat_philo(t_pro *p, t_phil *ph);
 int			dead_philo(t_pro *p);
 int			sleep_philo(t_pro *p, t_phil *ph);
 int			think_philo(t_pro *p, t_phil *ph);
 void		eat_util(t_pro *p, t_phil *ph);
+int			ft_meals(t_pro *p);
 
 /* */
 int			ft_mutex_destroy(t_pro *p);

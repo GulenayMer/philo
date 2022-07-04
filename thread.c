@@ -20,6 +20,7 @@ int	ft_create_tread(t_pro *process)
 	i = 0;
 	process->time_start = get_time();
 	process->end = 0;
+	process->flag_dead = 0;
 	while (i < process->n_philos)
 	{
 		process->philos[i].time_last_meal = get_time();
@@ -31,7 +32,7 @@ int	ft_create_tread(t_pro *process)
 		}
 		i++;
 	}
-	//dead_philo(process);
+	dead_philo(process);
 	ft_join_tread(process);
 	return (0);
 }

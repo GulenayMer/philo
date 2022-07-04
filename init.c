@@ -22,9 +22,13 @@ int	get_args(t_pro *process, char **argv, int argc)
 	if (argc == 6)
 	{
 		process->n_meals = ft_atoi(argv[5]);
+		process->flag_meal = 1;
 	}
 	else
+	{
 		process->n_meals = -1;
+		process->flag_meal = 0;
+	}
 	return (0);
 }
 
@@ -42,6 +46,7 @@ int	init_data_for_philos(t_pro *process)
 		process->philos[i].pro = process;
 		process->philos[i].id = i + 1;
 		process->philos[i].meals_eaten = 0;
+		process->philos[i].full = 0;
 		process->philos[i].left_fork = i;
 		if (i == process->n_philos - 1)
 			process->philos[i].right_fork = 0;
@@ -49,6 +54,7 @@ int	init_data_for_philos(t_pro *process)
 			process->philos[i].right_fork = i + 1;
 		i++;
 	}
+	process->n_fed = 0;
 	return (0);
 }
 

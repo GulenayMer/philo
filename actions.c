@@ -23,6 +23,7 @@ int	eat_philo(t_pro *p, t_phil *ph)
 	ph->time_last_meal = get_time();
 	pthread_mutex_unlock(&p->last_meal_mutex);
 	print_message(p, ph, EAT);
+	p->n_meals++;
 	usleep(p->time_to_eat * 1000);
 	pthread_mutex_unlock(&(p->fork_mutex[ph->left_fork]));
 	pthread_mutex_unlock(&(p->fork_mutex[ph->right_fork]));
@@ -32,32 +33,36 @@ int	eat_philo(t_pro *p, t_phil *ph)
 int	eat_sleep_think(t_pro *p, t_phil *ph)
 {
 	eat_philo(p, ph);
+	p->n_fed++;
+	ft_meals(p);
 	sleep_philo(p, ph);
 	think_philo(p, ph);
+	usleep(100);
 	return (0);
 }
 
-int	dead_philo(t_pro *p)
+/* */
+int		dead_philo(t_pro *p)
 {
-	int	i;
-
-	i = 0;
 	while (1)
 	{
 		pthread_mutex_lock(&p->last_meal_mutex);
 		pthread_mutex_lock(&p->dead_mutex);
-		if (get_time() - p->philos[i].time_last_meal >= p->time_to_die)
+		if (get_time() - p->philos->time_last_meal > p->time_to_die)
 		{
-			p->end = 1;
+			if (!p->flag_dead)
+				print_message(p, p->philos, DEAD);
 			p->flag_dead = 1;
+			p->end = 1;
 			print_message(p, p->philos, DEAD);
 			pthread_mutex_unlock(&p->last_meal_mutex);
 			pthread_mutex_unlock(&p->dead_mutex);
-			break ;
+			return (0);
 		}
 		pthread_mutex_unlock(&p->last_meal_mutex);
 		pthread_mutex_unlock(&p->dead_mutex);
-		i++;
+		if (p->flag_dead)
+			return (0);
 	}
 	return (0);
 }

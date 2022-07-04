@@ -12,11 +12,31 @@
 
 #include "philo.h"
 
+/* number of meals */
+int	ft_meals(t_pro *p)
+{
+	pthread_mutex_lock(&p->dead_mutex);
+	if (p->flag_meal && p->philos->meals_eaten == p->n_meals)
+	{
+			//if (c == p->n_philos)
+			//{
+				if (!(p->flag_dead))
+					printf("All ate\n");
+				p->philos->full = 1;
+				p->end = 1;
+				return (1);
+			//}
+	}
+	pthread_mutex_unlock(&p->dead_mutex);
+	return (0);
+}	
+
 /* simulation for each philosopher */
 void	*routine(void *philosophers)
 {
 	t_pro	*p;
 	t_phil	*ph;
+	//pthread_t	control_die;
 
 	ph = (t_phil *)philosophers;
 	p = ph->pro;
@@ -31,17 +51,15 @@ void	*routine(void *philosophers)
 	pthread_mutex_lock(&p->last_meal_mutex);
 	ph->time_last_meal = get_time();
 	pthread_mutex_unlock(&p->last_meal_mutex);
-	while (!p->end)
+	while (1)
 	{
-		dead_philo(p);
-/* 		if (p->end)
+		eat_sleep_think(p, ph);
+		if (p->flag_dead)
 		{
 			pthread_mutex_lock(&p->dead_mutex);
-			p->end = 1;
 			pthread_mutex_unlock(&p->dead_mutex);
-			break ;
-		} */
-		eat_sleep_think(p, ph);
+			return (0);
+		}
 	}
 	return (NULL);
 }
