@@ -6,13 +6,14 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 17:22:39 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/01 14:07:36 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/06 18:55:47 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/* getting arguments as argv, and storing them into the variables respectively */
+/* getting arguments as argv, 
+	and storing them into the variables respectively */
 int	get_args(t_pro *process, char **argv, int argc)
 {
 	process->n_philos = ft_atoi(argv[1]);
@@ -32,21 +33,20 @@ int	get_args(t_pro *process, char **argv, int argc)
 	return (0);
 }
 
-/* initiliazing the variables */
+/* initiliazing the variables for each philosophers */
 int	init_data_for_philos(t_pro *process)
 {
 	int	i;
 
 	process->philos = malloc(sizeof(t_phil) * process->n_philos);
-	if (!process->philos)
+	if (process->philos == NULL)
 		return (1);
 	i = 0;
 	while (i < process->n_philos)
 	{
 		process->philos[i].pro = process;
-		process->philos[i].id = i + 1;
 		process->philos[i].meals_eaten = 0;
-		process->philos[i].full = 0;
+		process->philos[i].id = i + 1;
 		process->philos[i].left_fork = i;
 		if (i == process->n_philos - 1)
 			process->philos[i].right_fork = 0;
@@ -80,15 +80,32 @@ int	ft_init_mutex(t_pro *process)
 	return (0);
 }
 
-/* initiliazing the forks mutextes for each philos, as the number of philo = the number of forks */
+int	ft_init_mutex2(t_pro *process)
+{
+	if (pthread_mutex_init(&(process->end_mutex), NULL) != 0)
+	{
+		printf("error in end mutex initializing");
+		return (1);
+	}
+	if (pthread_mutex_init(&(process->count_meals_mutex), NULL) != 0)
+	{
+		printf("error in count meal mutex initializing");
+		return (1);
+	}
+	return (0);
+}
+
+/* initiliazing the forks mutextes for each philos,
+ as the number of philo = the number of forks */
 int	ft_init_fork(t_pro *process)
 {
 	int	i;
 	int	n;
 
 	n = process->n_philos;
-	process->fork_mutex = (pthread_mutex_t *)malloc((sizeof(pthread_mutex_t)) * n);
-	if (!process->fork_mutex)	
+	process->fork_mutex = (pthread_mutex_t *)malloc((sizeof(pthread_mutex_t)) \
+		* n);
+	if (!process->fork_mutex)
 		return (1);
 	i = 0;
 	while (i < process->n_philos)

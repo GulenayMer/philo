@@ -6,26 +6,29 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 13:47:32 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/06/30 22:05:20 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/06 18:17:02 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+/* for the 'think routine' */
+void	think_philo(t_pro *p, t_phil *ph)
+{
+	print_message(p, ph, THINK);
+}
+
 /* lock the particular message and print it to know which action is taken */
 void	print_message(t_pro *process, t_phil *philos, char *message)
 {
-		long long current;
+	long long	current;
 
-		current = get_time();
-		//pthread_mutex_lock(&process->dead_mutex);
-		pthread_mutex_lock(&(process->print_mutex));
-		if (!process->end)
-			printf("%05lld %d %s\n", current - process->time_start, \
-				philos->id, message);
-		pthread_mutex_unlock(&(process->print_mutex));
-		//pthread_mutex_unlock(&(process->dead_mutex));
-
+	current = get_time();
+	pthread_mutex_lock(&(process->print_mutex));
+	if (!process->end)
+		printf("%05lld %d %s\n", current - process->time_start, \
+			philos->id, message);
+	pthread_mutex_unlock(&(process->print_mutex));
 }
 
 /* calculate the time in ms 

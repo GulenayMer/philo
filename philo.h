@@ -6,7 +6,7 @@
 /*   By: mgulenay <mgulenay@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 19:05:07 by mgulenay          #+#    #+#             */
-/*   Updated: 2022/07/01 14:07:55 by mgulenay         ###   ########.fr       */
+/*   Updated: 2022/07/06 18:19:47 by mgulenay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,12 @@
 
 typedef struct s_phil
 {
-	int			id;
-	pthread_t	tid;
-	int			left_fork;
-	int			right_fork;
-	long long	time_last_meal;
-	int			meals_eaten;
-	int			full;
+	int				id;
+	pthread_t		tid;
+	int				left_fork;
+	int				right_fork;
+	long long		time_last_meal;
+	int				meals_eaten;
 	struct s_pro	*pro;
 }	t_phil;
 
@@ -51,9 +50,11 @@ typedef struct s_pro
 	int				flag_meal;
 	int				n_fed;
 	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	end_mutex;
 	pthread_mutex_t	*fork_mutex;
 	pthread_mutex_t	dead_mutex;
 	pthread_mutex_t	last_meal_mutex;
+	pthread_mutex_t	count_meals_mutex;
 	t_phil			*philos;
 }		t_pro;
 
@@ -74,19 +75,23 @@ int			ft_init_fork(t_pro *process);
 int			ft_create_tread(t_pro *process);
 int			ft_join_tread(t_pro *process);
 int			ft_init_mutex(t_pro *process);
+int			ft_init_mutex2(t_pro *process);
 
 /* actions */
 void		*routine(void *philosophers);
-int			eat_sleep_think(t_pro *p, t_phil *ph);
-int			eat_philo(t_pro *p, t_phil *ph);
+void		eat_sleep_think(t_pro *p, t_phil *ph);
+void		eat_philo(t_pro *p, t_phil *ph);
 int			dead_philo(t_pro *p);
-int			sleep_philo(t_pro *p, t_phil *ph);
-int			think_philo(t_pro *p, t_phil *ph);
+void		sleep_philo(t_pro *p, t_phil *ph);
+void		think_philo(t_pro *p, t_phil *ph);
 void		eat_util(t_pro *p, t_phil *ph);
-int			ft_meals(t_pro *p);
+void		ft_meals(t_pro *p, t_phil *ph);
+int			one_philo(t_pro *p, t_phil *ph);
+void		dead_philo2(t_pro *p);
 
 /* */
 int			ft_mutex_destroy(t_pro *p);
+int			ft_mutex_destroy2(t_pro *p);
 void		free_all(t_pro *p);
 
 #endif
